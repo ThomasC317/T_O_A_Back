@@ -6,8 +6,12 @@
 /* update password */
 /* Update username */
 /* Update updateDate */
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/user.controller');
+import express from "express";
+import { getUsers, createUser } from "../controllers/user.controller.js";
 
-router.get('/', userController.get)
+const router = express.Router();
+
+router.get("/", getUsers);
+router.post("/", createUser);
+
+export default router;
