@@ -32,7 +32,153 @@ model Save {
 }
 
 model Village {
-  id   Int    @id @default(autoincrement())
-  name String
-  Save Save?
+  id                   Int              @id @default(autoincrement())
+  name                 String
+  save                 Save?
+  level                Int
+  resourcePerSecond    Int
+  resource             Int
+  totalResource        Int
+  remainingSkillPoints Int
+  skills               Skill[]
+  apogee               Apogee?
+  villageServants      VillageServant[]
+  villageFarmers       VillageFarmer[]
+  villageItem          VillageItem[]
+  villageShops         VillageShop[]
+}
+
+model Stat {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  Skill       Skill?
+  ServantStat ServantStat?
+}
+
+model Farmer {
+  id                    Int            @id @default(autoincrement())
+  name                  String
+  description           String
+  baseResourcePerSecond Int
+  quality               Int
+  VillageFarmer         VillageFarmer?
+}
+
+model Item {
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String
+  value           Int
+  icon            String
+  generalType     Int
+  quality         Int
+  type            Int
+  VillageItem     VillageItem?
+  VillageShopItem VillageShopItem?
+}
+
+model Servant {
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String
+  quality        Int
+  VillageServant VillageServant?
+  ServantStat    ServantStat?
+}
+
+model Apogee {
+  id              Int      @id @default(autoincrement())
+  village         Village? @relation(fields: [villageId], references: [id])
+  villageId       Int?     @unique
+  maxResource     Int
+  maxFarmersLevel Int
+  level           Int
+  statMultiplier  Int
+}
+
+// Liaisons
+
+model Skill {
+  id             Int      @id @default(autoincrement())
+  village        Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  villageId      Int?     @unique
+  stat           Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
+  statId         Int?     @unique
+  assignedPoints Int
+}
+
+model VillageServant {
+  id        Int       @id @default(autoincrement())
+  villages  Village[]
+  servant   Servant?  @relation(fields: [servantId], references: [id])
+  servantId Int?      @unique
+}
+
+model ServantStat {
+  id        Int      @id @default(autoincrement())
+  servant   Servant? @relation(fields: [servantId], references: [id], onDelete: Cascade)
+  servantId Int?     @unique
+  stat      Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
+  statId    Int?     @unique
+  value     Int
+}
+
+model VillageFarmer {
+  id                       Int                       @id @default(autoincrement())
+  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  villageId                Int?                      @unique
+  farmer                   Farmer?                   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmerId                 Int?                      @unique
+  totalResourceGenerated   Int
+  isActive                 Boolean
+  level                    Int
+  quality                  Int
+  nextUpgradeCost          Int
+  resourcePerSecond        Int
+  VillageFarmerVillageItem VillageFarmerVillageItem?
+  ItemStat                 ItemStat?
+}
+
+model VillageItem {
+  id                       Int                       @id @default(autoincrement())
+  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  villageId                Int?                      @unique
+  item                     Item?                     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId                   Int?                      @unique
+  apogeeLevel              Int
+  VillageFarmerVillageItem VillageFarmerVillageItem?
+  ItemStat                 ItemStat?
+}
+
+model VillageFarmerVillageItem {
+  id              Int            @id @default(autoincrement())
+  villageFarmer   VillageFarmer? @relation(fields: [villageFarmerId], references: [id], onDelete: Cascade)
+  villageFarmerId Int?           @unique
+  villageItem     VillageItem?   @relation(fields: [villageItemId], references: [id], onDelete: Cascade)
+  villageItemId   Int?           @unique
+}
+
+model ItemStat {
+  id     Int            @id @default(autoincrement())
+  item   VillageFarmer? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId Int?           @unique
+  stat   VillageItem?   @relation(fields: [statId], references: [id], onDelete: Cascade)
+  statId Int?           @unique
+  value  Int
+}
+
+model VillageShop {
+  id               Int               @id @default(autoincrement())
+  village          Village?          @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  villageId        Int?              @unique
+  villageShopItems VillageShopItem[]
+}
+
+model VillageShopItem {
+  id            Int          @id @default(autoincrement())
+  item          Item?        @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId        Int?         @unique
+  villageShop   VillageShop? @relation(fields: [villageShopId], references: [id], onDelete: Cascade)
+  villageShopId Int?         @unique
 }
