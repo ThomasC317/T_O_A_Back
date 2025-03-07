@@ -23,3 +23,21 @@ export const deleteUser = async ({ userId }) => {
       where: { id: convertedId },
     });
   };
+
+// Update un utilisateur
+export const putUser = async ({userId, username, email, password }) => {
+  const id = parseInt(userId, 10);  // Assurez-vous que userId est un nombre entier
+  console.log(id);
+  if (isNaN(id)) {
+    throw new Error("ID invalide");
+  }
+  
+  return await prisma.user.update({
+    where: { id: id },  // ID de l'utilisateur à mettre à jour
+    data: {
+      username: username,  // Nouveau username
+      email: email,        // Nouveau email
+      password: password
+    },
+  });
+};
