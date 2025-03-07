@@ -12,3 +12,14 @@ export const createNewUser = async ({ username, email, password }) => {
     data: { username, email, password },
   });
 };
+
+// Supprimer un utilisateur
+export const deleteUser = async ({ userId }) => {
+    const convertedId = parseInt(userId, 10);  // Convertir userId en nombre entier
+    if (isNaN(convertedId)) {
+      throw new Error("ID invalide");
+    }
+    return await prisma.user.delete({
+      where: { id: convertedId },
+    });
+  };
