@@ -16,6 +16,7 @@ CREATE TABLE "Save" (
     "userId" INTEGER NOT NULL,
     "villageId" INTEGER,
     "isActive" BOOLEAN NOT NULL,
+    "lastDisconnectDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Save_pkey" PRIMARY KEY ("id")
 );
