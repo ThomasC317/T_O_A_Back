@@ -13,6 +13,7 @@ async function main() {
       password: 'securepassword', // Hache en prod !
       saves: {
         create: {
+          isActive : true,
           village: {
             create: {
               name: 'Village des Braves',

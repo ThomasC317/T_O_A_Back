@@ -29,6 +29,7 @@ model Save {
   userId    Int
   village   Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId Int?     @unique
+  isActive Boolean
 }
 
 model Village {

@@ -15,6 +15,7 @@ CREATE TABLE "Save" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
     "villageId" INTEGER,
+    "isActive" BOOLEAN NOT NULL,
 
     CONSTRAINT "Save_pkey" PRIMARY KEY ("id")
 );
