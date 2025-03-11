@@ -13,7 +13,7 @@ router.get("/", getSaves);
 router.get("/:id", getSave);
 router.post("/", createSave);
 router.delete("/:id",removeSave)
-router.put("/:id", updateUser)
-
+router.put("/:id/disconnect", updateLastDisconnectDateForSave)
+router.put("/:id/activate", updateIsActiveForSave)
 
 export default router;
