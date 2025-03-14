@@ -34,7 +34,7 @@ export const createSave = async (req, res) => {
 export const removeSave = async (req, res) => {
     try {
       const saveId = req.params.saveId;
-      await deleteSave({ req.userId,saveId });
+      await deleteSave(req.userId,saveId);
       res.status(201).json({ message: "save supprimé !"});
     } catch (error) {
       res.status(500).json({ message: "Erreur serveur", error: error.message });
@@ -45,7 +45,7 @@ export const removeSave = async (req, res) => {
 export const updateLastDisconnectDateForSave = async (req, res) => {
   try {
     const { saveId } = req.body;
-    const updatedSave = await setSaveLastDisconnectDate({req.userId,saveId  });
+    const updatedSave = await setSaveLastDisconnectDate(req.userId,saveId);
     res.status(201).json(updatedSave);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
@@ -55,7 +55,7 @@ export const updateLastDisconnectDateForSave = async (req, res) => {
 export const updateIsActiveForSave = async (req, res) => {
     try {
       const { saveId,isActive } = req.body;
-      const updatedSave = await setSaveIsActive({req.userId,saveId, isActive });
+      const updatedSave = await setSaveIsActive(req.userId,saveId, isActive);
       res.status(201).json(updatedSave);
     } catch (error) {
       res.status(500).json({ message: "Erreur serveur", error: error.message });

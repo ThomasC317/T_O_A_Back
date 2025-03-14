@@ -1,4 +1,0 @@
-/* Skill */
-
-
-/* Set skill */

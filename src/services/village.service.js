@@ -2,8 +2,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Récupérer le village
-export const getAllUsers = async () => {
-  return await prisma.user.findMany();
+export const getVillage = async (villageId) => {
+  return await prisma.village.findFirst({
+    where: {
+      id: villageId
+    }
+  });
 };
 
 // Créer un village
@@ -11,7 +15,7 @@ export const createVillage = async (villageName, saveId) => {
   return await prisma.village.create({
     data: { 
       villageName:villageName,
-      saveId: saveId      
+      saveId: saveId,      
     },
   });
 };
@@ -80,7 +84,7 @@ export const updateVillageName = async (villageId, villageName) => {
 
 // Add skill on level up talent
 export const addSkillPoint = async (villageId, statId,level,assignedPoints) => {
-  return await prisma.skill.update({
+  return await prisma.skill.create({
     data: {
       villageId: villageId,
       statId: statId,
@@ -173,9 +177,7 @@ export const setVillageFarmerLevel = async (villageFarmerId, nextUpgradeCost, ne
   ]);
 }
 
-// Update village Farmer (quality)
 
-// Update total resource generated
 
 
 // Add village Item
@@ -195,11 +197,6 @@ export const getAllVillageItems = async (villageId) => {
     where: { id: villageId },
   });
 };
-
-// Add villageFarmerVillageItem
-// Get villageFarmerVillageItem
-
-// Get villageShop
 
 // Get apogeeVillage (get last)
 export const getApogeeVillage = async (villageId) => {
@@ -248,4 +245,12 @@ export const createVillageServant = async (villageId, servantId ) => {
   });
 };
 
+// Add villageFarmerVillageItem
+// Get villageFarmerVillageItem
 
+// Get villageShop
+// Set villageShop (get random items, reseted every day?)
+
+// Update village Farmer (quality)
+
+// Update total resource generated
