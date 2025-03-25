@@ -16,5 +16,24 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   },
-  "type": "module"
+  "type": "module",
+  "name": "t_o_a_back",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000T\u0000_\u0000O\u0000_\u0000A\u0000_\u0000B\u0000a\u0000c\u0000k\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasC317/T_O_A_Back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasC317/T_O_A_Back/issues"
+  },
+  "homepage": "https://github.com/ThomasC317/T_O_A_Back#readme"
 }
