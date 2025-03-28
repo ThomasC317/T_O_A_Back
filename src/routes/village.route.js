@@ -5,7 +5,7 @@ import { GetVillage, UpdateLevel, UpdateResourcePerSecond, UpdateResource, Updat
 
 const router = express.Router();
 
-router.get("/", GetVillage);
+router.get("/:id", GetVillage);
 router.post("/", CreateVillage);
 router.put("/:id/level", UpdateLevel)
 router.put("/:id/resourcePerSecond", UpdateResourcePerSecond)

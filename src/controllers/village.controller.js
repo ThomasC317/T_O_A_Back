@@ -2,12 +2,23 @@ import { getVillage,createVillage,updateResource,updateResourcePerSecond,updateR
 
 export const GetVillage = async (req, res) => {
   try {
-    const users = await getVillage(req.villageId);
-    res.json(users);
+    const villageId = parseInt(req.params.id, 10);
+    if (isNaN(villageId)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+
+    const village = await getVillage(villageId);
+    
+    if (!village) {
+      return res.status(404).json({ message: "Village non trouvé" });
+    }
+
+    res.json(village);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 
 
 export const CreateVillage = async (req, res) => {
