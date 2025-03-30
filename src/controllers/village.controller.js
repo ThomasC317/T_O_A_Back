@@ -6,14 +6,17 @@ export const GetVillage = async (req, res) => {
     if (isNaN(villageId)) {
       return res.status(400).json({ message: "ID invalide" });
     }
-
     const village = await getVillage(villageId);
+    const time = (new Date() - village.lastActivity);
+    const afkResources = Math.floor((time / 1000) * village.resourcePerSecond);
+
+    const result = await updateResource(villageId,afkResources);
     
-    if (!village) {
+    if (!result) {
       return res.status(404).json({ message: "Village non trouvé" });
     }
 
-    res.json(village);
+    res.json(result);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
@@ -33,8 +36,18 @@ export const CreateVillage = async (req, res) => {
 
 export const UpdateResource = async (req, res) => {
   try {
-    const { villageId, newResource } = req.body;
-    const updatedUser = await updateResource({ villageId, newResource});
+    // const { villageId, newResource } = req.body;
+    const villageId = parseInt(req.params.id, 10);
+    const newResource = parseInt(req.body.newResource, 10);
+    console.log("VillageId", villageId);
+    console.log("newResource", newResource);
+    if (isNaN(villageId)) {
+      return res.status(400).json({ message: "ID invalide" });
+    }
+    if (!newResource) {
+      return res.status(400).json({ message: "Resource invalide" });
+    }
+    const updatedUser = await updateResource(villageId, newResource);
     res.status(201).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });

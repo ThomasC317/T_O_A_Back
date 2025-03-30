@@ -30,7 +30,8 @@ export const updateResource = async (villageId, newResource) => {
       },
       totalResource: {
         increment: newResource
-      }
+      },
+      lastActivity: new Date()
     }
   })
 }

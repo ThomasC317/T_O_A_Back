@@ -1,11 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
 }
 
@@ -26,39 +20,40 @@ model User {
 
 model Save {
   id                 Int      @id @default(autoincrement())
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             Int
-  village            Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId          Int?     @unique
   isActive           Boolean
   lastDisconnectDate DateTime @default(now())
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  village            Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
 }
 
 model Village {
-  id                   Int              @id @default(autoincrement())
+  id                   Int             @id @default(autoincrement())
   name                 String
-  save                 Save?
   level                Int
   resourcePerSecond    Int
   resource             Int
   totalResource        Int
   remainingSkillPoints Int
-  skills               Skill[]
-  apogee               Apogee?          @relation(fields: [apogeeId], references: [id])
-  villageServants      VillageServant[]
-  villageFarmers       VillageFarmer[]
-  villageItem          VillageItem[]
-  villageShops         VillageShop[]
   apogeeId             Int?
+  save                 Save?
+  skills               Skill?
+  apogee               Apogee?         @relation(fields: [apogeeId], references: [id])
   VillageApogee        VillageApogee?
+  villageFarmers       VillageFarmer?
+  villageItem          VillageItem?
+  villageServants      VillageServant?
+  villageShops         VillageShop?
+  lastActivity DateTime @default(now())
 }
 
 model Stat {
   id          Int          @id @default(autoincrement())
   name        String
   description String
-  Skill       Skill?
   ServantStat ServantStat?
+  Skill       Skill?
 }
 
 model Farmer {
@@ -88,8 +83,8 @@ model Servant {
   name           String
   description    String
   quality        Int
-  VillageServant VillageServant?
   ServantStat    ServantStat?
+  VillageServant VillageServant?
 }
 
 model Apogee {
@@ -102,39 +97,35 @@ model Apogee {
   VillageApogee   VillageApogee?
 }
 
-// Liaisons
-
 model Skill {
   id             Int      @id @default(autoincrement())
-  village        Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId      Int?     @unique
-  stat           Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
   statId         Int?     @unique
   assignedPoints Int
+  stat           Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
+  village        Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
 }
 
 model VillageServant {
   id        Int      @id @default(autoincrement())
-  village   Village? @relation(fields: [villageId], references: [id])
+  servantId Int?     @unique
   villageId Int?     @unique
   servant   Servant? @relation(fields: [servantId], references: [id])
-  servantId Int?     @unique
+  village   Village? @relation(fields: [villageId], references: [id])
 }
 
 model ServantStat {
   id        Int      @id @default(autoincrement())
-  servant   Servant? @relation(fields: [servantId], references: [id], onDelete: Cascade)
   servantId Int?     @unique
-  stat      Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
   statId    Int?     @unique
   value     Int
+  servant   Servant? @relation(fields: [servantId], references: [id], onDelete: Cascade)
+  stat      Stat?    @relation(fields: [statId], references: [id], onDelete: Cascade)
 }
 
 model VillageFarmer {
   id                       Int                       @id @default(autoincrement())
-  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId                Int?                      @unique
-  farmer                   Farmer?                   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
   farmerId                 Int?                      @unique
   totalResourceGenerated   Int
   isActive                 Boolean
@@ -142,57 +133,59 @@ model VillageFarmer {
   quality                  Int
   nextUpgradeCost          Int
   resourcePerSecond        Int
-  VillageFarmerVillageItem VillageFarmerVillageItem?
   ItemStat                 ItemStat?
+  farmer                   Farmer?                   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  VillageFarmerVillageItem VillageFarmerVillageItem?
 }
 
 model VillageItem {
   id                       Int                       @id @default(autoincrement())
-  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId                Int?                      @unique
-  item                     Item?                     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId                   Int?                      @unique
   apogeeLevel              Int
-  VillageFarmerVillageItem VillageFarmerVillageItem?
   ItemStat                 ItemStat?
+  VillageFarmerVillageItem VillageFarmerVillageItem?
+  item                     Item?                     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  village                  Village?                  @relation(fields: [villageId], references: [id], onDelete: Cascade)
 }
 
 model VillageFarmerVillageItem {
   id              Int            @id @default(autoincrement())
-  villageFarmer   VillageFarmer? @relation(fields: [villageFarmerId], references: [id], onDelete: Cascade)
   villageFarmerId Int?           @unique
-  villageItem     VillageItem?   @relation(fields: [villageItemId], references: [id], onDelete: Cascade)
   villageItemId   Int?           @unique
+  villageFarmer   VillageFarmer? @relation(fields: [villageFarmerId], references: [id], onDelete: Cascade)
+  villageItem     VillageItem?   @relation(fields: [villageItemId], references: [id], onDelete: Cascade)
 }
 
 model ItemStat {
   id     Int            @id @default(autoincrement())
-  item   VillageFarmer? @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId Int?           @unique
-  stat   VillageItem?   @relation(fields: [statId], references: [id], onDelete: Cascade)
   statId Int?           @unique
   value  Int
+  item   VillageFarmer? @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  stat   VillageItem?   @relation(fields: [statId], references: [id], onDelete: Cascade)
 }
 
 model VillageShop {
-  id               Int               @id @default(autoincrement())
-  village          Village?          @relation(fields: [villageId], references: [id], onDelete: Cascade)
-  villageId        Int?              @unique
-  villageShopItems VillageShopItem[]
+  id               Int              @id @default(autoincrement())
+  villageId        Int?             @unique
+  village          Village?         @relation(fields: [villageId], references: [id], onDelete: Cascade)
+  villageShopItems VillageShopItem?
 }
 
 model VillageShopItem {
   id            Int          @id @default(autoincrement())
-  item          Item?        @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId        Int?         @unique
-  villageShop   VillageShop? @relation(fields: [villageShopId], references: [id], onDelete: Cascade)
   villageShopId Int?         @unique
+  item          Item?        @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  villageShop   VillageShop? @relation(fields: [villageShopId], references: [id], onDelete: Cascade)
 }
 
 model VillageApogee {
   id        Int      @id @default(autoincrement())
-  village   Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
   villageId Int?     @unique
-  apogee    Apogee?  @relation(fields: [apogeeId], references: [id], onDelete: Cascade)
   apogeeId  Int?     @unique
+  apogee    Apogee?  @relation(fields: [apogeeId], references: [id], onDelete: Cascade)
+  village   Village? @relation(fields: [villageId], references: [id], onDelete: Cascade)
 }
