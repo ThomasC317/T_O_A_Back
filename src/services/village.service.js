@@ -6,7 +6,30 @@ export const getVillage = async (villageId) => {
   return await prisma.village.findFirst({
     where: {
       id: villageId
-    }
+    },
+    include: {
+      villageFarmers: {
+        include: {
+          farmer: true,
+          stats:true
+        },
+      },
+      villageItems: {
+        include: {
+          item: true,
+        },
+      },
+      villageApogee: {
+        include: {
+          apogee: true,
+        },
+      },
+      villageServants: {
+        include: {
+          servant: true,
+        },
+      },
+    },
   });
 };
 
@@ -31,7 +54,10 @@ export const updateResource = async (villageId, newResource) => {
       totalResource: {
         increment: newResource
       },
-      lastActivity: new Date()
+      lastActivity: new Date(),
+      xp: {
+        increment: newResource
+      }
     }
   })
 }

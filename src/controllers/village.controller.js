@@ -3,24 +3,45 @@ import { getVillage,createVillage,updateResource,updateResourcePerSecond,updateR
 export const GetVillage = async (req, res) => {
   try {
     const villageId = parseInt(req.params.id, 10);
+
+    // Validation de l'ID
     if (isNaN(villageId)) {
       return res.status(400).json({ message: "ID invalide" });
     }
-    const village = await getVillage(villageId);
-    const time = (new Date() - village.lastActivity);
-    const afkResources = Math.floor((time / 1000) * village.resourcePerSecond);
 
-    const result = await updateResource(villageId,afkResources);
-    
-    if (!result) {
+    // Récupération du village
+    const village = await getVillage(villageId);
+    if (!village) {
       return res.status(404).json({ message: "Village non trouvé" });
     }
 
-    res.json(result);
+    console.log("Village récupéré", village);
+
+    // Calcul du temps d'inactivité et des ressources AFK
+    const time = (new Date() - new Date(village.lastActivity));  // Assurez-vous que lastActivity est une date valide
+    if (isNaN(time)) {
+      return res.status(400).json({ message: "Erreur lors du calcul du temps d'inactivité" });
+    }
+    const afkResources = Math.floor((time / 1000) * village.resourcePerSecond);
+
+    // Mise à jour des ressources
+    const result = await updateResource(villageId, afkResources);
+    if (!result) {
+      return res.status(404).json({ message: "Mise à jour des ressources échouée" });
+    }
+
+    // Récupérer le village après mise à jour (si vous souhaitez renvoyer l'état actualisé)
+    const updatedVillage = await getVillage(villageId);
+
+    // Répondre avec le village mis à jour et les ressources AFK calculées
+    res.json({ village: updatedVillage, afkResources });
   } catch (error) {
+    // Gestion des erreurs serveur avec détails supplémentaires
+    console.error("Erreur serveur :", error);
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 
 
 

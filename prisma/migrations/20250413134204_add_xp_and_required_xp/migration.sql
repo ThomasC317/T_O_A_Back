@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Village" ADD COLUMN     "requiredXpForLevelUp" INTEGER NOT NULL DEFAULT 100,
+ADD COLUMN     "xp" INTEGER NOT NULL DEFAULT 0;
