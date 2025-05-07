@@ -1,6 +1,12 @@
 import { getAllServants } from "../services/servant.service.js";
 
-// Récupérer tous les serviteurs
+// ---------------
+// GetServants
+// ---------------
+// Get All servants from db
+// Not used for the moment
+// Maybe for a wiki later
+// ---------------
 export const getServants = async (req, res) => {
   try {
     const servants = await getAllServants();

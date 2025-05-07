@@ -8,6 +8,9 @@ export const getVillage = async (villageId) => {
       id: villageId
     },
     include: {
+      villageChief:
+      {
+        include:{
       villageFarmers: {
         include: {
           farmer: true,
@@ -29,6 +32,8 @@ export const getVillage = async (villageId) => {
           servant: true,
         },
       },
+    },
+    },
     },
   });
 };
@@ -63,7 +68,7 @@ export const updateResource = async (villageId, newResource) => {
 }
 
 // Update les resources per second 
-export const updateResourcePerSecond = async (villageId, newResourcePerSecond) => {
+export const updateResourcePerTick = async (villageId, newResourcePerSecond) => {
   return await prisma.village.update({
     where: { id: villageId },
     data: {

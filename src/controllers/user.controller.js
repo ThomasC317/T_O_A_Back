@@ -1,6 +1,11 @@
 import { getAllUsers, createNewUser, deleteUser, putUser } from "../services/user.service.js";
 
-// Récupérer tous les utilisateurs
+// ---------------
+// GetUsers
+// ---------------
+// Get all users from the db 
+// not used for the moment (management)
+// ---------------
 export const getUsers = async (req, res) => {
   try {
     const users = await getAllUsers();
@@ -10,7 +15,18 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// Créer un utilisateur
+// TODO : check how to hash the password
+// ---------------
+// CreateUser
+// ---------------
+// Add a user to the db
+// Used when the player first log in
+// ---------------
+// Param : 
+// username
+// email
+// Password
+// ---------------
 export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -21,7 +37,15 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Supprimer un utilisateur
+// ---------------
+// RemoveUser
+// ---------------
+// Delete user from the db
+// Not used for the moment (management)
+// ---------------
+// Param : 
+// userId
+// ---------------
 export const removeUser = async (req, res) => {
     try {
       const userId = req.params.id; 
@@ -33,7 +57,17 @@ export const removeUser = async (req, res) => {
     }
   };
 
-  // Créer un utilisateur
+// ---------------
+// UpdateUser
+// ---------------
+// Update user in the db
+// Not used for the moment (management and account management)
+// ---------------
+// Param : 
+// username
+// email
+// password
+// ---------------
 export const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;

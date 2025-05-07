@@ -1,6 +1,16 @@
 import { getAllSaves, getActiveSave, createNewSave, deleteSave, setSaveLastDisconnectDate,setSaveIsActive } from "../services/save.service.js";
 
-// Récupérer tous les utilisateurs
+// ---------------
+// GetSaves
+// ---------------
+// Get Saves from db
+// Not used for the moment
+// Will be used by the player if he want multiples villages
+// Maybe the logic could be simplified. Like having multiple villages and no multiple saves.
+// ---------------
+// Param : 
+// userId
+// ---------------
 export const getSaves = async (req, res) => {
   try {
     const users = await getAllSaves(req.userId);
@@ -10,7 +20,15 @@ export const getSaves = async (req, res) => {
   }
 };
 
-// Récupérer tous les utilisateurs
+// ---------------
+// GetSave
+// ---------------
+// get active save from db
+// maybe not useful since we have the village logic
+// ---------------
+// Param : 
+// userId
+// ---------------
 export const getSave = async (req, res) => {
     try {
       const users = await getActiveSave(req.userId);
@@ -20,7 +38,12 @@ export const getSave = async (req, res) => {
     }
   };
 
-// Add a new save
+// ---------------
+// CreateSave
+// ---------------
+// Add a save to the database
+// maybe not useful since we have the village logic
+// ---------------
 export const createSave = async (req, res) => {
   try {
     const newSave = await createNewSave();
@@ -30,7 +53,14 @@ export const createSave = async (req, res) => {
   }
 };
 
-// Delete a save
+// ---------------
+// DeleteSave
+// ---------------
+// Remove a save from the db
+// ---------------
+// Param : 
+// saveId
+// ---------------
 export const removeSave = async (req, res) => {
     try {
       const saveId = req.params.saveId;

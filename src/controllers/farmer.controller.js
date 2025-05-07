@@ -1,6 +1,16 @@
 import { getAllFarmers } from "../services/farmer.service.js";
 
-// Récupérer tous les serviteurs
+// ---------------
+// getFarmers
+// ---------------
+// get all farmers from db
+// Not used for the moment
+// Maybe for a wiki later
+// ---------------
+// Param : 
+// villageId
+// servantId
+// ---------------
 export const getFarmers = async (req, res) => {
   try {
     const farmers = await getAllFarmers();
