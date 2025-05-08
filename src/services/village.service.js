@@ -1,40 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Récupérer le village
 export const getVillage = async (villageId) => {
-  return await prisma.village.findFirst({
+  return await prisma.village.findUnique({
     where: {
-      id: villageId
+      id: villageId,
     },
     include: {
-      villageChief:
-      {
-        include:{
-      villageFarmers: {
+      villageChief: {
         include: {
-          farmer: true,
-          stats:true
+          role: true,
         },
       },
-      villageItems: {
-        include: {
-          item: true,
+          villageFarmers: {
+            include: {
+              farmer: true,
+              stats: true,
+            },
+          },
+          villageItems: {
+            include: {
+              item: true,
+            },
+          },
+          villageApogee: {
+            include: {
+              apogee: true,
+            },
+          },
+          villageServants: {
+            include: {
+              servant: true,
+            },
+          },
         },
-      },
-      villageApogee: {
-        include: {
-          apogee: true,
-        },
-      },
-      villageServants: {
-        include: {
-          servant: true,
-        },
-      },
-    },
-    },
-    },
   });
 };
 

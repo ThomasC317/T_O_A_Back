@@ -50,7 +50,7 @@ model Village {
   villageShops    VillageShop[]
   villageStats    VillageStat[]
 
-  villageChief    VillageChief?
+  villageChief    VillageChief?  
 }
 
 
